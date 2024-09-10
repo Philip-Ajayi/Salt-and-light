@@ -1,4 +1,9 @@
 <?php
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // MySQL database connection parameters
 $servername = "sql.freedb.tech";
 $username = "freedb_Saltandlight";
@@ -23,18 +28,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $location = $_POST['location'];
 
-    // Prepare the SQL query to insert data into the "saltandlight" table
-    $sql = "INSERT INTO saltandlight (first_name, last_name, phone, email, location) 
-            VALUES ('$firstName', '$lastName', '$phone', '$email', '$location')";
+    // Prepare and execute the SQL query to insert data into the "saltandlight" table
+    $stmt = $conn->prepare("INSERT INTO saltandlight (first_name, last_name, phone, email, location) 
+                            VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $firstName, $lastName, $phone, $email, $location);
 
-    // Execute the query and check if successful
-    if ($conn->query($sql) === TRUE) {
+    if ($stmt->execute()) {
         // Redirect to success page after successful registration
         header('Location: index.html');
-        exit(); // Always call exit after a redirect to stop the script
+        exit(); // Always call exit after a redirect
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $stmt->error;
     }
+
+    // Close the statement
+    $stmt->close();
 }
 
 // Close the connection

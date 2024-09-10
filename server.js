@@ -5,7 +5,8 @@ const path = require('path');
 
 const app = express();
 
-const uri = 'mongodb+srv://barryjacob08:HrpYPLgajMiRJBgN@cluster0.ssafp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+// Updated MongoDB connection string
+const uri = 'mongodb+srv://barryjacob08:HrpYPLgajMiRJBgN@cluster0.ssafp.mongodb.net/mydatabase?retryWrites=true&w=majority';
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));

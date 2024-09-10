@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path');
+
 const app = express();
 
 const uri = 'mongodb+srv://barryjacob08:HrpYPLgajMiRJBgN@cluster0.ssafp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
@@ -19,7 +21,14 @@ const registrationSchema = new mongoose.Schema({
 const Registration = mongoose.model('Registration', registrationSchema);
 
 app.use(bodyParser.json());
-app.use(express.static('public'));
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve index.html for all other routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 app.post('/register', async (req, res) => {
     const { firstName, lastName, phone, email, location } = req.body;
@@ -34,5 +43,5 @@ app.post('/register', async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log('Server is running on port 3000'));
-  
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

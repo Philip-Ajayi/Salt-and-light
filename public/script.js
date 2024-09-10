@@ -19,7 +19,9 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
 
         if (response.ok) {
             document.getElementById('message').textContent = 'Registration successful!';
-            document.getElementById('registrationForm').reset();
+            setTimeout(() => {
+                window.location.href = 'index.html'; // Redirect to index.html
+            }, 5000); // 5 seconds delay
         } else {
             document.getElementById('message').textContent = 'Registration failed. Try again!';
         }

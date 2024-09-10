@@ -1,8 +1,8 @@
 <?php
 // MySQL database connection parameters
 $servername = "sql.freedb.tech";
-$username = "freedb_saltandlight";
-$password = "rmj9jk8pqY&3mPJ";
+$username = "freedb_freedb_Saltandlight";
+$password = "&wEh7*7pEv746Q9";
 $dbname = "freedb_Saltandlight";
 $port = 3306;
 

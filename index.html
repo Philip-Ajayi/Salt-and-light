@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register for Salt and Light 2024</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Salt and Light Conference Registration</title>
+    
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Link to Font Awesome for social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
+        <img src="banner.jpg" alt="Conference Banner" class="banner">
         <h1>Register for Salt and Light Conference</h1>
-        <form id="registrationForm" action="register.php" method="POST">
+        <form id="registrationForm">
             <div class="input-group">
                 <input type="text" id="firstName" name="firstName" required>
                 <label>First Name</label>
@@ -34,8 +40,15 @@
             <button type="submit">Register</button>
         </form>
         <p id="message"></p>
+
+        <div class="social-icons">
+            <a href="https://m.facebook.com/mivwordhouse/" target="_blank" class="facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/mivwordhouse" target="_blank" class="twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/mivwordhouse/" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
+        </div>
     </div>
 
     <script src="script.js"></script>
 </body>
-</html>
+    </html>
+    

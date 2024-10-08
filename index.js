@@ -42,10 +42,10 @@ const Attendance = mongoose.model('Attendance', attendanceSchema);
 // Time window function to determine if the current time is within any defined window
 const checkAttendanceWindow = (time) => {
   const windows = [
-    { start: '00:00', end: '15:00' },
-    { start: '15:01', end: '18:00' },
-    { start: '19:00', end: '20:00' },
-    { start: '21:00', end: '22:00' },
+    { start: '06:00', end: '08:00' },
+    { start: '10:00', end: '13:10' },
+    { start: '13:11', end: '16:00' },
+    { start: '17:00', end: '20:30' },
   ];
 
   const nowInGMT1 = moment.tz(time, "Africa/Lagos"); // Change to "Africa/Lagos"
@@ -86,34 +86,52 @@ app.post('/api/login/:role', async (req, res) => {
   }
 });
 
-// Endpoint to handle registration and attendance marking
-app.post('/api/register', async (req, res) => {
+// Endpoint to handle registration and attendance marking based on role
+app.post('/api/register/:role', async (req, res) => {
   const { name, phone, email, location } = req.body;
+  const { role } = req.params; // Get the role from the URL
   const now = new Date();
   const attendanceWindow = checkAttendanceWindow(now);
 
   try {
+    // Check if the user already exists
     let user = await User.findOne({ email });
     if (!user) {
-      user = new User({ name, phone, email, location, session: 'new' });
+      // If the user doesn't exist, create a new one and assign the role
+      user = new User({ name, phone, email, location, session: role });
       await user.save();
     }
 
+    // If within attendance window, mark attendance
     if (attendanceWindow) {
       const newAttendance = new Attendance({
         user: user._id,
-        session: 'new',
+        session: role, // Assign the role as the session
         time: moment().tz("Africa/Lagos").format('HH:mm'),
         date: moment().tz("Africa/Lagos").format('YYYY-MM-DD')
       });
       await newAttendance.save();
-      return res.json({ success: true, session: 'new', time: moment().tz("Africa/Lagos").format('HH:mm'), date: moment().tz("Africa/Lagos").format('YYYY-MM-DD'), name: user.name });
+      return res.json({
+        success: true,
+        session: role, // Return the role as the session
+        time: moment().tz("Africa/Lagos").format('HH:mm'),
+        date: moment().tz("Africa/Lagos").format('YYYY-MM-DD'),
+        name: user.name
+      });
     } else {
-      return res.json({ success: true, message: "User registered but not within the attendance window." });
+      return res.json({
+        success: true,
+        message: "User registered but not within the attendance window.",
+        session: role, // Return the role as the session
+        name: user.name
+      });
     }
   } catch (err) {
     console.error('Error during registration:', err);
-    res.status(500).json({ success: false, message: 'Server error during registration. Check logs for details.' });
+    res.status(500).json({
+      success: false,
+      message: 'Server error during registration. Check logs for details.'
+    });
   }
 });
 
